@@ -28,7 +28,7 @@ absolute Cloudflare R2 URLs.
 ## Deployment
 
 The repository is deployed with Vercel. The intended production domain is
-`echoh.us.ui`.
+`hr00-blog.vercel.app`.
 
 The original theme is based on
 [cosy-jekyll-theme](https://rubygems.org/gems/cosy-jekyll-theme) and remains

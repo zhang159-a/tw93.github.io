@@ -1,4 +1,4 @@
-# robots.txt for echoh.us.ui
+# robots.txt for hr00-blog.vercel.app
 # Allow all search engines and AI crawlers
 
 User-agent: *
@@ -9,7 +9,7 @@ Disallow: /js/
 Disallow: /.git/
 
 # Sitemap
-Sitemap: https://echoh.us.ui/sitemap.xml
+Sitemap: https://hr00-blog.vercel.app/sitemap.xml
 
 # AI Crawlers - Explicitly allow for better indexing
 User-agent: GPTBot

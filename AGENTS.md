@@ -4,7 +4,7 @@
 
 This repository powers Hr00's personal Jekyll blog.
 
-Vercel is the deployment target. Feature branches and pull requests are previews; `main` is production. The intended custom domain is `echoh.us.ui`.
+Vercel is the deployment target. Feature branches and pull requests are previews; `main` is production. The canonical site URL is `hr00-blog.vercel.app`.
 
 ## Repository Map
 
