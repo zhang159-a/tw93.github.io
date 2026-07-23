@@ -1,8 +1,6 @@
-const CACHE_NAME = "tw93-cache-v1";
+const CACHE_NAME = "hr00-cache-v1";
 const FONT_BASE_URL = "https://gw.alipayobjects.com/os/k/jinkai/";
-const IMMUTABLE_ASSETS = [
-  "https://gw.alicdn.com/imgextra/i4/O1CN01XYYPwL1uheeXASHIQ_!!6000000006069-2-tps-420-420.png", // Favicon/Logo
-];
+const IMMUTABLE_ASSETS = ["/images/favicon.svg"];
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();

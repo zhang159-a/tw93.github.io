@@ -7,23 +7,10 @@ module Jekyll
       'img.alicdn.com'
     ]
 
-    # Cloudflare R2 custom domain. R2 does NOT support ?x-oss-process=; it uses
-    # Cloudflare's /cdn-cgi/image/ URL transformations instead (auto webp/avif).
-    CF_DOMAIN = 'cdn.tw93.fun'
-    CF_PREFIX = "https://#{CF_DOMAIN}/".freeze
-    CF_TRANSFORM = 'width=2000,quality=80,format=auto,fit=scale-down'.freeze
-
     # Build an optimized image URL based on the source host.
     def self.optimize(url)
       return url if url.nil? || url.empty?
       return url if url =~ /\.(svg|gif)$/i
-
-      # cdn.tw93.fun (Cloudflare R2) -> /cdn-cgi/image/ transformation.
-      if url.start_with?(CF_PREFIX)
-        return url if url.include?('/cdn-cgi/image/')
-        rest = url[CF_PREFIX.length..-1]
-        return "#{CF_PREFIX}cdn-cgi/image/#{CF_TRANSFORM}/#{rest}"
-      end
 
       # Live Aliyun OSS CDNs -> ?x-oss-process= params.
       return url if url.include?('x-oss-process')
