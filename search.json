@@ -1,15 +1,18 @@
 ---
 layout: null
 ---
+{% assign published_weekly = site.weekly | where_exp: "item", "item.published != false" %}
+{% assign search_items = site.posts | concat: published_weekly %}
 [
-  {% for post in site.posts %}
+  {% for item in search_items %}
   {
-    "title": {{ post.title | jsonify }},
-    "url": "{{ post.url }}",
-    "date": "{{ post.date | date: '%Y-%m-%d' }}",
-    "categories": {{ post.categories | jsonify }},
-    "summary": {{ post.summary | default: "" | jsonify }},
-    "content": {{ post.content | strip_html | truncatewords: 50 | jsonify }},
+    "title": {{ item.title | jsonify }},
+    "url": "{{ item.url }}",
+    "date": "{{ item.date | date: '%Y-%m-%d' }}",
+    "categories": {% if item.collection == "weekly" %}["Weekly"]{% elsif item.categories %}{{ item.categories | jsonify }}{% else %}[]{% endif %},
+    "summary": {{ item.summary | default: item.description | default: "" | jsonify }},
+    "content": {{ item.content | strip_html | truncatewords: 50 | jsonify }},
+    "type": "{% if item.collection == 'weekly' %}weekly{% else %}post{% endif %}",
     "lang": "zh-CN"
   }{% unless forloop.last %},{% endunless %}
   {% endfor %}

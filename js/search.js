@@ -145,7 +145,7 @@
 
   // Show empty state
   function showEmptyState() {
-    searchResults.innerHTML = '<div class="search-empty-state">输入关键词搜索文章</div>';
+    searchResults.innerHTML = '<div class="search-empty-state">输入关键词搜索文章或 Weekly</div>';
   }
 
   // Display search results
@@ -153,7 +153,7 @@
     selectedIndex = -1;
 
     if (results.length === 0) {
-      searchResults.innerHTML = '<div class="search-no-results">没有找到相关文章</div>';
+      searchResults.innerHTML = '<div class="search-no-results">没有找到相关内容</div>';
       return;
     }
 

@@ -1,0 +1,24 @@
+---
+layout: null
+permalink: /weekly/feed.xml
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.title | append: " Weekly" | xml_escape }}</title>
+    <description>Hr00 的每周记录：读到的、学到的，以及仍在思考的事。</description>
+    <link>{{ site.url }}/weekly/</link>
+    <atom:link href="{{ site.url }}/weekly/feed.xml" rel="self" type="application/rss+xml" />
+    {% assign weekly_items = site.weekly | where_exp: "item", "item.published != false" | sort: "issue" | reverse %}
+    {% for item in weekly_items limit: 20 %}
+    <item>
+      <title>第 {{ item.issue }} 期 · {{ item.title | xml_escape }}</title>
+      <description>{{ item.description | default: item.content | strip_html | xml_escape }}</description>
+      <pubDate>{{ item.date | date_to_rfc822 }}</pubDate>
+      <link>{{ site.url }}{{ item.url }}</link>
+      <guid isPermaLink="true">{{ site.url }}{{ item.url }}</guid>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
