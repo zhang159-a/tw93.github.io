@@ -33,8 +33,8 @@ the dedicated `/weekly/feed.xml` RSS feed.
 
 ## Deployment
 
-The repository is deployed with Vercel. The intended production domain is
-`hr00-blog.vercel.app`.
+The repository is deployed with Vercel. The production domain is
+`www.byhaoran.cn`; `byhaoran.cn` redirects to it.
 
 The original theme is based on
 [cosy-jekyll-theme](https://rubygems.org/gems/cosy-jekyll-theme) and remains

@@ -1,7 +1,7 @@
 # Site Information
 title: Hr00
 description: "Hr00 的个人博客，技术小白，拥抱 AI，记录自己的生活和学习的笔记，以及当下的思考。"
-url: https://hr00-blog.vercel.app
+url: https://www.byhaoran.cn
 repo: zhang159-a/tw93.github.io
 lang: zh-CN
 encoding: utf-8
@@ -11,7 +11,7 @@ timezone: Asia/Shanghai
 author:
   name: Hr00
   email: 1397543194z@gmail.com
-  url: https://hr00-blog.vercel.app
+  url: https://www.byhaoran.cn
   github: zhang159-a
 
 # Social Media and External URLs

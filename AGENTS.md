@@ -4,7 +4,7 @@
 
 This repository powers Hr00's personal Jekyll blog.
 
-Vercel is the deployment target. Feature branches and pull requests are previews; `main` is production. The canonical site URL is `hr00-blog.vercel.app`.
+Vercel is the deployment target. Feature branches and pull requests are previews; `main` is production. The canonical site URL is `www.byhaoran.cn`; `byhaoran.cn` redirects to it.
 
 ## Repository Map
 
