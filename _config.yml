@@ -1,37 +1,26 @@
 # Site Information
-title: Tw93
-description: "Tw93 的个人博客，杭州产品工程师，写一些关于产品工程、AI Coding、开源工具的思考"
-url: https://tw93.fun
-repo: tw93/tw93.github.io
+title: Hr00
+description: "Hr00 的个人博客，技术小白，拥抱 AI，记录自己的生活和学习的笔记，以及当下的思考。"
+url: https://echoh.us.ui
+repo: zhang159-a/tw93.github.io
 lang: zh-CN
 encoding: utf-8
-timezone: Africa/El_Aaiun
+timezone: Asia/Shanghai
 
 # Author Information (for SEO and AI crawlers)
 author:
-  name: Tw93
-  email: tw93@qq.com
-  url: https://tw93.fun
-  twitter: HiTw93
-  github: tw93
+  name: Hr00
+  email: 1397543194z@gmail.com
+  url: https://echoh.us.ui
+  github: zhang159-a
 
 # Social Media and External URLs
-github: tw93
-zhihu: tw93
-twitter: HiTw93
-v2ex: tw93
+github: zhang159-a
 menu:
-  - title: "Weekly"
-    url: "https://weekly.tw93.fun/"
   - title: "GitHub"
-    url: "https://github.com/tw93"
-  - title: "Twitter"
-    url: "https://twitter.com/HiTw93"
+    url: "https://github.com/zhang159-a"
   - title: "About"
     url: "/about.html"
-
-# SEO and Analytics
-google_analytics: G-KS7EDB6BRM
 
 # Build Settings
 paginate: 10
@@ -58,19 +47,18 @@ collections:
   posts:
     output: true
     permalink: /:year-:month-:day/:title.html
-  posts_en:
-    output: true
-    permalink: /en/:year-:month-:day/:title.html
-    sort_by: date
-
-include: [".htaccess", "robots.txt", "llms.txt", "llms-full.txt", "api", "projects", "6ff2b87724ac930114bf05c74db50bb5.txt"]
+include: [".htaccess", "robots.txt"]
 exclude:
   [
     "Gemfile",
     "Gemfile.lock",
     "README.md",
+    "AGENTS.md",
     "LICENSE",
     "package.json",
+    "package-lock.json",
+    "vercel.json",
+    "giscus.json",
     "node_modules",
     "SEO_GUIDE.md",
     "CLAUDE.md",
@@ -110,13 +98,6 @@ defaults:
         changefreq: weekly
   - scope:
       path: ""
-      type: "posts_en"
-    values:
-      sitemap:
-        priority: 0.8
-        changefreq: weekly
-  - scope:
-      path: ""
       type: "pages"
     values:
       sitemap:
@@ -124,8 +105,11 @@ defaults:
         changefreq: monthly
 
 # Custom Site Settings
-showBuyCoffee: true
-payImage: //gw.alipayobjects.com/zos/k/vb/1.png
-assetUrl: //tw93.fun/images/
+showBuyCoffee: false
 defaultImage: data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 
+# Comments stay disabled until this fork has its own Giscus repository IDs.
+giscus:
+  enabled: false
+  repo_id: ""
+  category_id: ""

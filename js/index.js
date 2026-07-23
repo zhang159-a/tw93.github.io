@@ -1,5 +1,5 @@
 /**
- * Created by Tw93 on 2017/1/31.
+ * Theme interactions adapted for the Hr00 blog.
  */
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       var stripCfResize = function (url) {
         if (!url || typeof url !== 'string') return url;
-        // https://cdn.tw93.fun/cdn-cgi/image/<opts>/<path> -> https://cdn.tw93.fun/<path>
+        // Strip Cloudflare image transformations before opening the original image.
         return url.replace(/\/cdn-cgi\/image\/[^/]+\//, '/');
       };
 

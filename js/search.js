@@ -129,19 +129,11 @@
     }
 
     if (!isDataLoaded) {
-      searchResults.innerHTML = '<div class="search-loading">Loading...</div>';
+      searchResults.innerHTML = '<div class="search-loading">正在加载...</div>';
       return;
     }
 
-    // Detect current page language
-    const isEnglishPage = window.location.pathname.includes('/en/');
-
-    // Filter articles by language
-    const filteredData = isEnglishPage
-      ? searchData.filter(post => post.lang === 'en-US')
-      : searchData.filter(post => post.lang === 'zh-CN');
-
-    const results = filteredData.filter(post => {
+    const results = searchData.filter(post => {
       return post.title.toLowerCase().includes(query) ||
              post.summary.toLowerCase().includes(query) ||
              post.content.toLowerCase().includes(query) ||
@@ -153,7 +145,7 @@
 
   // Show empty state
   function showEmptyState() {
-    searchResults.innerHTML = '<div class="search-empty-state">Type to search articles...</div>';
+    searchResults.innerHTML = '<div class="search-empty-state">输入关键词搜索文章</div>';
   }
 
   // Display search results
@@ -161,7 +153,7 @@
     selectedIndex = -1;
 
     if (results.length === 0) {
-      searchResults.innerHTML = '<div class="search-no-results">No results found</div>';
+      searchResults.innerHTML = '<div class="search-no-results">没有找到相关文章</div>';
       return;
     }
 
