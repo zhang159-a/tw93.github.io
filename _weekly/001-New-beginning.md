@@ -7,13 +7,6 @@ cover: ""
 description: "用一两句话说明这一期记录了什么。"
 ---
 
-<!--
-写作前：
-1. 复制并重命名这个文件，例如 001-first-week.md。
-2. 将 cover 填成 PicGo 上传后的 Cloudflare R2 绝对 URL。
-3. 写完后删除 published: false，提交到 main 即会自动发布。
--->
-
 ## 这周干了什么
 
 - 干了什么
