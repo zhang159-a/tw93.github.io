@@ -22,8 +22,16 @@ The generated static site is written to `_site/`.
 ## Writing
 
 Chinese posts live in `_posts/` and use the filename format
-`YYYY-MM-DD-topic.md`. Images uploaded through PicGo should be inserted as
-absolute Cloudflare R2 URLs.
+`YYYY-MM-DD-topic.md`. Choose a structure from `_templates/`, copy it into
+`_posts/`, rename it, and update its frontmatter:
+
+- `01-技术研究.md` - technical practice, product analysis, and research.
+- `02-学习复盘.md` - courses, tools, books, and learning records.
+- `03-观点思考.md` - observations, opinions, and personal reflections.
+
+Keep `published: false` while drafting and remove that line when the post is
+ready. Images uploaded through PicGo should be inserted as absolute Cloudflare
+R2 URLs.
 
 Weekly issues live in `_weekly/`. Copy `_weekly/001-template.md`, rename it to
 the issue slug (for example `001-first-week.md`), fill in `issue`, `title`,
