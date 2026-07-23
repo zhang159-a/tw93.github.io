@@ -25,6 +25,12 @@ Chinese posts live in `_posts/` and use the filename format
 `YYYY-MM-DD-topic.md`. Images uploaded through PicGo should be inserted as
 absolute Cloudflare R2 URLs.
 
+Weekly issues live in `_weekly/`. Copy `_weekly/001-template.md`, rename it to
+the issue slug (for example `001-first-week.md`), fill in `issue`, `title`,
+`date`, `cover`, and `description`, then remove `published: false` when the
+issue is ready. Published issues appear at `/weekly/`, in site search, and in
+the dedicated `/weekly/feed.xml` RSS feed.
+
 ## Deployment
 
 The repository is deployed with Vercel. The intended production domain is

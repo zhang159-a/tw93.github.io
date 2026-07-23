@@ -19,6 +19,8 @@ github: zhang159-a
 menu:
   - title: "GitHub"
     url: "https://github.com/zhang159-a"
+  - title: "Weekly"
+    url: "/weekly/"
   - title: "About"
     url: "/about.html"
 
@@ -47,6 +49,10 @@ collections:
   posts:
     output: true
     permalink: /:year-:month-:day/:title.html
+  weekly:
+    output: true
+    permalink: /weekly/:name/
+    sort_by: issue
 include: [".htaccess", "robots.txt"]
 exclude:
   [
@@ -95,6 +101,14 @@ defaults:
     values:
       sitemap:
         priority: 0.8
+        changefreq: weekly
+  - scope:
+      path: ""
+      type: "weekly"
+    values:
+      layout: weekly
+      sitemap:
+        priority: 0.7
         changefreq: weekly
   - scope:
       path: ""

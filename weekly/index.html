@@ -1,0 +1,59 @@
+---
+layout: base
+title: Weekly
+poem: "Weekly · 每周一页"
+body_id: weekly-index
+hideHomeActive: true
+summary: "Hr00 的每周记录：读到的、学到的，以及仍在思考的事。"
+permalink: /weekly/
+---
+
+{% assign weekly_items = site.weekly | where_exp: "item", "item.published != false" | sort: "issue" | reverse %}
+
+<section class="weekly-shell">
+  <header class="weekly-intro">
+    <div>
+      <span class="weekly-kicker">HR00 / WEEKLY NOTES</span>
+      <h1>把一周，留成一页。</h1>
+    </div>
+    <div class="weekly-intro-copy">
+      <p>记录这一周读到的、学到的，以及还没有想明白的事。</p>
+      <a href="{{ '/weekly/feed.xml' | relative_url }}">订阅 Weekly RSS →</a>
+    </div>
+  </header>
+
+  {% if weekly_items.size > 0 %}
+  <div class="weekly-grid">
+    {% for item in weekly_items %}
+    <a class="weekly-card" href="{{ item.url | relative_url }}" aria-label="阅读第 {{ item.issue }} 期：{{ item.title }}">
+      <article>
+        <div class="weekly-card-visual{% if item.cover == nil or item.cover == empty %} is-placeholder{% endif %}">
+          {% if item.cover and item.cover != empty %}
+          <img src="{{ item.cover | cdn_image_url }}" alt="" loading="lazy" decoding="async">
+          {% endif %}
+          <span class="weekly-card-number" aria-hidden="true">{{ item.issue }}</span>
+          <span class="weekly-card-label">WEEKLY / NO. {{ item.issue }}</span>
+        </div>
+        <div class="weekly-card-body">
+          <time datetime="{{ item.date | date_to_xmlschema }}">{{ item.date | date: "%Y-%m-%d" }}</time>
+          <h2>{{ item.title }}</h2>
+          {% if item.description %}
+          <p>{{ item.description }}</p>
+          {% endif %}
+          <span class="weekly-card-action">打开这一期 <span aria-hidden="true">↗</span></span>
+        </div>
+      </article>
+    </a>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="weekly-empty">
+    <div class="weekly-empty-number" aria-hidden="true">01</div>
+    <div>
+      <span class="weekly-kicker">FIRST ISSUE / IN PROGRESS</span>
+      <h2>第一期还在路上。</h2>
+      <p>这里会慢慢收下每周值得留下的链接、片段和想法。</p>
+    </div>
+  </div>
+  {% endif %}
+</section>

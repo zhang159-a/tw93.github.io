@@ -1,0 +1,458 @@
+@use "globals" as *;
+
+$weekly-ink: #20242a;
+$weekly-muted: #69717a;
+$weekly-line: rgba($weekly-ink, 0.13);
+$weekly-accent: #1b365d;
+$weekly-paper: #ffffff;
+
+.weekly-kicker,
+.weekly-issue-label,
+.weekly-card-label {
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+}
+
+#weekly-index {
+  #main {
+    margin-top: $menu-height;
+    background:
+      linear-gradient(90deg, transparent 0, transparent calc(50% - 1px), rgba($weekly-ink, 0.025) 50%, transparent calc(50% + 1px)),
+      $body-color;
+
+    @media #{$medium} {
+      margin-top: 0;
+    }
+  }
+}
+
+.weekly-shell {
+  width: min(1120px, 100%);
+  margin: 0 auto;
+  padding: 36px 16px 64px;
+  box-sizing: border-box;
+
+  @media #{$medium} {
+    padding: 64px 30px 96px;
+  }
+}
+
+.weekly-intro {
+  display: grid;
+  gap: 24px;
+  margin-bottom: 38px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid $weekly-line;
+
+  @media #{$medium} {
+    grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+    align-items: end;
+    gap: 64px;
+    margin-bottom: 50px;
+    padding-bottom: 42px;
+  }
+
+  .weekly-kicker {
+    color: $weekly-accent;
+  }
+
+  h1 {
+    max-width: 620px;
+    margin: 10px 0 0;
+    color: $weekly-ink;
+    font-size: clamp(38px, 7vw, 68px);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+  }
+}
+
+.weekly-intro-copy {
+  color: $weekly-muted;
+  font-size: 16px;
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  a {
+    color: $weekly-accent;
+    font-weight: 700;
+  }
+}
+
+.weekly-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+
+  @media #{$medium} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+}
+
+.weekly-card {
+  display: block;
+  color: $weekly-ink;
+  border-radius: 12px;
+
+  article {
+    height: 100%;
+    overflow: hidden;
+    background: $weekly-paper;
+    border: 1px solid $weekly-line;
+    border-radius: 12px;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  }
+
+  &:visited {
+    color: $weekly-ink;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($weekly-accent, 0.25);
+  }
+
+  @media (hover: hover) {
+    &:hover article {
+      transform: translateY(-4px);
+      border-color: rgba($weekly-accent, 0.3);
+      box-shadow: 0 18px 45px rgba($weekly-ink, 0.1);
+    }
+  }
+}
+
+.weekly-card-visual {
+  position: relative;
+  min-height: 220px;
+  overflow: hidden;
+  background: $weekly-ink;
+  color: $weekly-paper;
+
+  @media #{$medium} {
+    min-height: 280px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba($weekly-ink, 0.04) 30%, rgba($weekly-ink, 0.7));
+  }
+
+  &.is-placeholder {
+    background:
+      radial-gradient(circle at 78% 22%, rgba(255, 255, 255, 0.16), transparent 24%),
+      repeating-linear-gradient(90deg, transparent 0 52px, rgba(255, 255, 255, 0.06) 53px 54px),
+      $weekly-accent;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    display: block;
+    object-fit: cover;
+    transition: transform 420ms ease;
+  }
+
+  .weekly-card:hover & img {
+    transform: scale(1.025);
+  }
+}
+
+.weekly-card-number {
+  position: absolute;
+  right: 18px;
+  bottom: -0.2em;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.19);
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(110px, 24vw, 190px);
+  font-weight: 800;
+  letter-spacing: -0.12em;
+  line-height: 0.82;
+}
+
+.weekly-card-label {
+  position: absolute;
+  left: 20px;
+  bottom: 18px;
+  z-index: 2;
+  color: $weekly-paper;
+}
+
+.weekly-card-body {
+  padding: 22px 20px 24px;
+
+  @media #{$medium} {
+    padding: 26px 28px 28px;
+  }
+
+  time {
+    color: $weekly-muted;
+    font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  h2 {
+    margin: 7px 0 8px;
+    color: $weekly-ink;
+    font-size: 26px;
+    line-height: 1.28;
+  }
+
+  p {
+    min-height: 3.4em;
+    margin: 0 0 20px;
+    color: $weekly-muted;
+    font-size: 15px;
+  }
+}
+
+.weekly-card-action {
+  color: $weekly-accent;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.weekly-empty {
+  position: relative;
+  min-height: 350px;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  padding: 34px 24px;
+  box-sizing: border-box;
+  background:
+    repeating-linear-gradient(90deg, transparent 0 64px, rgba(255, 255, 255, 0.055) 65px 66px),
+    $weekly-accent;
+  color: $weekly-paper;
+  border-radius: 12px;
+
+  @media #{$medium} {
+    min-height: 440px;
+    padding: 52px;
+  }
+
+  > div:last-child {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+  }
+
+  .weekly-kicker {
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  h2 {
+    margin: 8px 0 10px;
+    color: $weekly-paper;
+    font-size: clamp(34px, 6vw, 58px);
+    line-height: 1.12;
+  }
+
+  p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 16px;
+  }
+}
+
+.weekly-empty-number {
+  position: absolute;
+  right: -0.08em;
+  top: -0.1em;
+  color: rgba(255, 255, 255, 0.09);
+  font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(190px, 48vw, 420px);
+  font-weight: 800;
+  letter-spacing: -0.14em;
+  line-height: 1;
+}
+
+#weekly-post {
+  #main {
+    margin-top: $menu-height;
+    padding: 24px 0 58px;
+    background: $body-color;
+
+    @media #{$medium} {
+      margin-top: 0;
+      padding: 42px 20px 84px;
+    }
+  }
+}
+
+.weekly-detail-shell {
+  width: min(980px, 100%);
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.weekly-back-link {
+  display: inline-block;
+  margin: 0 16px 18px;
+  color: $weekly-muted;
+  font-size: 14px;
+  font-weight: 700;
+
+  @media #{$medium} {
+    margin: 0 0 22px;
+  }
+}
+
+.weekly-detail {
+  overflow: hidden;
+  background: $weekly-paper;
+
+  @media #{$medium} {
+    border: 1px solid $weekly-line;
+    border-radius: 12px;
+  }
+}
+
+.weekly-detail-hero {
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  align-items: end;
+  overflow: hidden;
+  padding: 34px 20px;
+  box-sizing: border-box;
+  background:
+    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.15), transparent 26%),
+    repeating-linear-gradient(90deg, transparent 0 64px, rgba(255, 255, 255, 0.055) 65px 66px),
+    $weekly-accent;
+  color: $weekly-paper;
+
+  @media #{$medium} {
+    min-height: 470px;
+    padding: 54px 62px;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba($weekly-ink, 0.08) 22%, rgba($weekly-ink, 0.8));
+  }
+
+  &.has-cover {
+    background: $weekly-ink;
+  }
+
+  h1 {
+    max-width: 760px;
+    margin: 10px 0 12px;
+    color: $weekly-paper;
+    font-size: clamp(34px, 6.5vw, 64px);
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+  }
+}
+
+.weekly-detail-cover {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.weekly-detail-hero-content {
+  position: relative;
+  z-index: 1;
+}
+
+.weekly-issue-label {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.weekly-detail-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 14px;
+
+  @media #{$medium} {
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+  }
+
+  time {
+    font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+    letter-spacing: 0.04em;
+  }
+}
+
+.weekly-detail-content {
+  margin: 0;
+  padding: 32px 20px 48px;
+  background: $weekly-paper;
+
+  @media #{$medium} {
+    padding: 52px 62px 72px;
+  }
+
+  > :first-child {
+    margin-top: 0;
+  }
+}
+
+.weekly-pagination {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 18px 16px 0;
+
+  @media #{$medium} {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin: 22px 0 0;
+  }
+}
+
+.weekly-pagination-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 20px;
+  background: $weekly-paper;
+  border: 1px solid $weekly-line;
+  border-radius: 10px;
+
+  span {
+    color: $weekly-muted;
+    font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+  }
+
+  strong {
+    color: $weekly-ink;
+    font-size: 17px;
+  }
+
+  &.is-next {
+    text-align: right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .weekly-card article,
+  .weekly-card-visual img {
+    transition: none;
+  }
+
+  .weekly-card:hover article,
+  .weekly-card:hover .weekly-card-visual img {
+    transform: none;
+  }
+}

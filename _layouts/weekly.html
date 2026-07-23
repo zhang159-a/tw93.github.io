@@ -1,0 +1,70 @@
+---
+layout: base
+body_id: weekly-post
+---
+
+{% assign weekly_items = site.weekly | where_exp: "item", "item.published != false" | sort: "issue" %}
+{% assign previous_issue = nil %}
+{% assign next_issue = nil %}
+{% assign current_found = false %}
+{% for item in weekly_items %}
+  {% if item.url == page.url %}
+    {% assign current_found = true %}
+  {% elsif current_found %}
+    {% assign next_issue = item %}
+    {% break %}
+  {% else %}
+    {% assign previous_issue = item %}
+  {% endif %}
+{% endfor %}
+
+<div class="weekly-detail-shell">
+  <a class="weekly-back-link" href="{{ '/weekly/' | relative_url }}">← 返回 Weekly</a>
+
+  <article class="weekly-detail">
+    <header class="weekly-detail-hero{% if page.cover and page.cover != empty %} has-cover{% endif %}">
+      {% if page.cover and page.cover != empty %}
+      <img
+        class="weekly-detail-cover"
+        src="{{ page.cover | cdn_image_url }}"
+        alt=""
+        fetchpriority="high"
+      >
+      {% endif %}
+      <div class="weekly-detail-hero-content">
+        <span class="weekly-issue-label">WEEKLY / NO. {{ page.issue }}</span>
+        <h1>{{ page.title }}</h1>
+        <div class="weekly-detail-meta">
+          <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+          {% if page.description %}
+          <span>{{ page.description }}</span>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+
+    <div class="weekly-detail-content entry-content heti">
+      {{ content | cdn_image_filter }}
+    </div>
+  </article>
+
+  {% if previous_issue or next_issue %}
+  <nav class="weekly-pagination" aria-label="Weekly 期刊导航">
+    {% if previous_issue %}
+    <a class="weekly-pagination-item is-previous" href="{{ previous_issue.url | relative_url }}">
+      <span>← 上一期 · NO. {{ previous_issue.issue }}</span>
+      <strong>{{ previous_issue.title }}</strong>
+    </a>
+    {% else %}
+    <span></span>
+    {% endif %}
+
+    {% if next_issue %}
+    <a class="weekly-pagination-item is-next" href="{{ next_issue.url | relative_url }}">
+      <span>下一期 · NO. {{ next_issue.issue }} →</span>
+      <strong>{{ next_issue.title }}</strong>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+</div>
