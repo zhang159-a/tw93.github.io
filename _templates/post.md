@@ -2,7 +2,6 @@
 layout: post
 title: "用一句具体的话写清文章主题"
 poem: ""
-date: 2026-07-23 20:00:00 +0800
 summary: "用一两句话交代为什么写、文章会讲什么，以及读者能得到什么。"
 feature: ""
 categories: Share
@@ -13,7 +12,7 @@ published: false
 写作前：
 1. 复制本文件到 _posts/。
 2. 重命名为 YYYY-MM-DD-topic.md，例如 2026-07-23-my-first-post.md。
-3. 修改 title、date、summary 和 categories。
+3. 修改 title、summary 和 categories；发布日期由文件名中的 YYYY-MM-DD 决定。
 4. poem 是页头的一句话，feature 是分享封面；没有合适内容时可以留空。
 5. categories 使用 Share（技术、经验、学习）或 Thought（生活、观点、思考）。
 6. 图片使用 PicGo 上传后的 Cloudflare R2 绝对 URL，并写清 alt 文本。
