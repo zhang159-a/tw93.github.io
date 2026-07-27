@@ -85,6 +85,37 @@ class ContentTaxonomyTest
     assert_includes error.message, 'tags must not have surrounding whitespace'
   end
 
+  def test_published_article_rejects_legacy_categories_and_missing_tags
+    error = assert_raises(Jekyll::Errors::FatalException) do
+      build_site(<<~YAML)
+        layout: post
+        title: "测试文章"
+        summary: "用于验证单分类字段。"
+        category: 技术实践
+        categories: Share
+        published: true
+      YAML
+    end
+
+    assert_includes error.message, 'categories is not supported'
+    assert_includes error.message, 'tags must be an array'
+  end
+
+  def test_published_article_rejects_empty_and_non_string_tags
+    error = assert_raises(Jekyll::Errors::FatalException) do
+      build_site(<<~YAML)
+        layout: post
+        title: "测试文章"
+        summary: "用于验证标签类型。"
+        category: 技术实践
+        tags: ["", 123, {name: Git}]
+        published: true
+      YAML
+    end
+
+    assert_includes error.message, 'tags must contain non-empty strings'
+  end
+
   def test_published_article_rejects_unknown_category
     error = assert_raises(Jekyll::Errors::FatalException) do
       build_site(<<~YAML)

@@ -62,7 +62,7 @@ body_id: articles
           class="articles-item"
           data-article-item
           data-category="{{ post.category | escape }}"
-          data-tags="{{ post.tags | join: '|' | escape }}"
+          data-tags="{{ post.tags | jsonify | escape }}"
         >
           <a href="{{ post.url | relative_url }}">
             <div class="articles-item-heading">

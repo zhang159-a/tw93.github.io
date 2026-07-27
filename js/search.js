@@ -158,6 +158,7 @@
       const highlightedSummary = SearchCore.highlightText(post.summary || post.content, query);
       const category = Array.isArray(post.categories) ? post.categories[0] || '' : '';
       const tags = Array.isArray(post.tags) ? post.tags.slice(0, 3) : [];
+      const typeLabel = post.type === 'weekly' ? 'Weekly' : '';
       const safeUrl = SearchCore.normalizeUrl(post.url);
 
       return `
@@ -168,6 +169,7 @@
           </div>
           <div class="search-result-meta">
             ${category ? `<span class="search-result-category">${SearchCore.escapeHtml(category)}</span>` : ''}
+            ${typeLabel ? `<span class="search-result-type">${typeLabel}</span>` : ''}
             ${tags.map(tag => `<span class="search-result-tag">#${SearchCore.escapeHtml(tag)}</span>`).join('')}
             <span class="search-result-date">${SearchCore.escapeHtml(post.date)}</span>
           </div>

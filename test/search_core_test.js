@@ -62,12 +62,13 @@ test('keeps Weekly searchable without fabricated taxonomy', () => {
     title: 'Weekly 001',
     summary: '独立周刊描述',
     content: '正文',
-    categories: ['Weekly'],
+    categories: [],
     tags: [],
     type: 'weekly'
   };
 
   assert(search.scoreResult(weekly, '周刊') > 0, 'Weekly summary should match');
+  assertEqual([], weekly.categories);
   assertEqual([], weekly.tags);
 });
 

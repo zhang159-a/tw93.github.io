@@ -19,14 +19,20 @@ module Hr00
 
         post_errors << "#{prefix} title must not be empty" if data['title'].to_s.strip.empty?
         post_errors << "#{prefix} summary must not be empty" if data['summary'].to_s.strip.empty?
+        if data.key?('categories')
+          post_errors << "#{prefix} categories is not supported; use the singular category field"
+        end
         unless CATEGORIES.include?(data['category'])
           post_errors << "#{prefix} category must be one of #{CATEGORIES.join('、')} (got #{data['category'].inspect})"
         end
-        if data.key?('tags') && !data['tags'].is_a?(Array)
+        unless data['tags'].is_a?(Array)
           post_errors << "#{prefix} tags must be an array"
-        elsif data['tags'].is_a?(Array)
+        else
           tags = data['tags']
           post_errors << "#{prefix} tags must contain at most 5 items" if tags.length > 5
+          if tags.any? { |tag| !tag.is_a?(String) || tag.strip.empty? }
+            post_errors << "#{prefix} tags must contain non-empty strings"
+          end
           if tags.any? { |tag| tag.is_a?(String) && tag != tag.strip }
             post_errors << "#{prefix} tags must not have surrounding whitespace"
           end

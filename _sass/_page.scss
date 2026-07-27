@@ -719,13 +719,6 @@ iframe {
 
 
 
-  &.header-item-mobile-hidden {
-    display: none;
-    @media #{$medium} {
-      display: flex;
-    }
-  }
-
   @media #{$medium} {
     padding-left: 10px; // Unified desktop breathing room
     padding-right: 10px;

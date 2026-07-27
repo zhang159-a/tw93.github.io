@@ -43,8 +43,8 @@ class ArticleDiscoveryTest
 
     assert_includes home, 'href="/articles/"'
     assert_includes home, '>文章</a>'
-    assert_includes home, 'header-item-left header-item-mobile-hidden"><a href="/about.html"'
-    refute_includes home, 'header-item-mobile-hidden"><a href="/articles/"'
+    assert_includes home, 'href="/about.html"'
+    refute_includes home, 'header-item-mobile-hidden'
     assert_includes index, 'data-articles-root'
     assert_includes index, 'data-article-count="3"'
     assert_includes index, 'Kaku AI 终端'
@@ -73,7 +73,8 @@ class ArticleDiscoveryTest
 
     assert_equal ['技术实践'], kaku.fetch('categories')
     assert_equal ['Kaku', 'Terminal'], kaku.fetch('tags')
-    assert_equal ['Weekly'], weekly.fetch('categories')
+    assert_includes kaku.fetch('content'), 'assistant.toml'
+    assert_equal [], weekly.fetch('categories')
     assert_equal [], weekly.fetch('tags')
   end
 

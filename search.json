@@ -9,10 +9,10 @@ layout: null
     "title": {{ item.title | jsonify }},
     "url": "{{ item.url }}",
     "date": "{{ item.date | date: '%Y-%m-%d' }}",
-    "categories": {% if item.collection == "weekly" %}["Weekly"]{% elsif item.categories %}{{ item.categories | jsonify }}{% else %}[]{% endif %},
+    "categories": {% if item.collection == "weekly" %}[]{% elsif item.categories %}{{ item.categories | jsonify }}{% else %}[]{% endif %},
     "tags": {% if item.collection == "weekly" %}[]{% elsif item.tags %}{{ item.tags | jsonify }}{% else %}[]{% endif %},
     "summary": {{ item.summary | default: item.description | default: "" | jsonify }},
-    "content": {{ item.content | strip_html | truncatewords: 50 | jsonify }},
+    "content": {{ item.content | strip_html | jsonify }},
     "type": "{% if item.collection == 'weekly' %}weekly{% else %}post{% endif %}",
     "lang": "zh-CN"
   }{% unless forloop.last %},{% endunless %}

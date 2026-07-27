@@ -119,6 +119,7 @@ class ArticleAuthoringTest
         File.join(ROOT, '_includes', 'post-item.html'),
         File.join(source, '_includes', 'post-item.html')
       )
+      FileUtils.cp(File.join(ROOT, 'feed.xml'), File.join(source, 'feed.xml'))
       File.write(
         File.join(source, 'index.md'),
         "---\nlayout: null\n---\n{% include post-item.html posts=site.posts %}\n"
@@ -137,8 +138,17 @@ class ArticleAuthoringTest
       Jekyll::Site.new(config).process
 
       output = File.read(File.join(destination, 'index.html'))
+      feed = File.read(File.join(destination, 'feed.xml'))
       assert_includes output, '应该被发现'
+      assert_includes feed, '应该被发现'
     end
+  end
+
+  def test_hidden_field_no_longer_hides_read_more_link
+    template = File.read(File.join(ROOT, '_includes', 'read-more.html'))
+
+    refute_includes template, 'previous.hidden'
+    refute_includes template, 'previous.hide'
   end
 
   def read_front_matter(path)
@@ -159,6 +169,12 @@ class ArticleAuthoringTest
     return if value.include?(expected)
 
     raise AssertionError, "Expected #{value.inspect} to include #{expected.inspect}"
+  end
+
+  def refute_includes(value, unexpected)
+    return unless value.include?(unexpected)
+
+    raise AssertionError, "Expected #{value.inspect} not to include #{unexpected.inspect}"
   end
 end
 
