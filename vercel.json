@@ -13,6 +13,10 @@
       "destination": "https://photos.byhaoran.cn/photos/"
     },
     {
+      "source": "/photos/",
+      "destination": "https://photos.byhaoran.cn/photos/"
+    },
+    {
       "source": "/photos/:path*",
       "destination": "https://photos.byhaoran.cn/photos/:path*"
     }
