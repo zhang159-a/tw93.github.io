@@ -1,4 +1,5 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "_site",
   "build": {
     "env": {
@@ -6,6 +7,16 @@
       "RUBYOPT": "-E utf-8"
     }
   },
+  "rewrites": [
+    {
+      "source": "/photos",
+      "destination": "https://photos.byhaoran.cn/photos/"
+    },
+    {
+      "source": "/photos/:path*",
+      "destination": "https://photos.byhaoran.cn/photos/:path*"
+    }
+  ],
   "headers": [
     {
       "source": "/(css|js)/(.*)",
