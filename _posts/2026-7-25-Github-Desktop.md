@@ -2,10 +2,10 @@
 layout: post
 title: "Github-Desktop 使用"
 poem: "Github-Desktop"
-date: 2026-07-25 17:28:16
 summary: "记录一下使用Github-Desktop的一些功能记录。"
 feature: ""
-categories: Share
+category: 技术实践
+tags: [Git]
 published: true
 ---
 

@@ -17,8 +17,8 @@ author:
 # Social Media and External URLs
 github: zhang159-a
 menu:
-  - title: "GitHub"
-    url: "https://github.com/zhang159-a"
+  - title: "文章"
+    url: "/articles/"
   - title: "Weekly"
     url: "/weekly/"
   - title: "About"

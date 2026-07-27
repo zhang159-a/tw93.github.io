@@ -199,7 +199,7 @@
   }
 }
 
-.search-result-excerpt {
+.search-result-summary {
   display: block;
   font-size: 14px;
   color: #6b7280;
@@ -236,6 +236,10 @@
     width: 14px;
     height: 14px;
   }
+}
+
+.search-result-tag {
+  color: $primary;
 }
 
 .search-result-date {

@@ -14,5 +14,6 @@ sitemap: false
 @use "elements";
 @use "page";
 @use "weekly";
+@use "articles";
 @use "search";
 @use "404" as error;

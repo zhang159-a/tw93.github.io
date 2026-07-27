@@ -26,7 +26,11 @@
 
 <script>window.ASSET_VERSION = '{{ site.asset_version }}';</script>
 <script src="{{ '/js/index.js' | relative_url }}?v={{ site.asset_version }}" defer></script>
+<script src="{{ '/js/search-core.js' | relative_url }}?v={{ site.asset_version }}" defer></script>
 <script src="{{ '/js/search.js' | relative_url }}?v={{ site.asset_version }}" defer></script>
+{% if page.articles_page %}
+<script src="{{ '/js/articles.js' | relative_url }}?v={{ site.asset_version }}" defer></script>
+{% endif %}
 
 <script>
   if ('serviceWorker' in navigator) {

@@ -719,20 +719,10 @@ iframe {
 
 
 
-  // Hide "About" (First Item) on mobile
-  .header-item-title + & {
+  &.header-item-mobile-hidden {
     display: none;
     @media #{$medium} {
-      display: flex; // Show on desktop
-      padding-left: 10px; // Reset padding
-    }
-  }
-
-  // Add spacing to "Weekly" (Second Item) on mobile
-  .header-item-title + & + & {
-    padding-left: 30px;
-    @media #{$medium} {
-      padding-left: 10px; // Reset to standard on desktop
+      display: flex;
     }
   }
 

@@ -1,0 +1,89 @@
+---
+layout: base
+title: 文章
+poem: "文章 · 按主题浏览"
+hideHomeActive: true
+articles_page: true
+body_id: articles
+---
+
+{% assign article_posts = site.posts %}
+<section class="articles-page" data-articles-root data-article-count="{{ article_posts | size }}">
+  <header class="articles-intro">
+    <p class="articles-eyebrow">Articles</p>
+    <h1>文章</h1>
+    <p>按分类和标签，找到你想读的内容。</p>
+    <span class="articles-total">共 {{ article_posts | size }} 篇</span>
+  </header>
+
+  <div class="articles-filters" aria-label="文章筛选">
+    <div class="articles-filter-group">
+      <h2>分类</h2>
+      <div class="articles-filter-options" role="group" aria-label="按分类筛选">
+        <button class="articles-filter is-active" type="button" data-category-filter="" aria-pressed="true">
+          全部 <span>{{ article_posts | size }}</span>
+        </button>
+        {% for category in site.article_categories %}
+          {% assign category_posts = site.categories[category] %}
+          <button class="articles-filter" type="button" data-category-filter="{{ category | escape }}" aria-pressed="false">
+            {{ category }} <span>{{ category_posts | size }}</span>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="articles-filter-group">
+      <h2>标签</h2>
+      <div class="articles-filter-options" role="group" aria-label="按标签筛选">
+        {% assign sorted_tags = site.tags | sort %}
+        {% for tag_entry in sorted_tags %}
+          {% assign tag_name = tag_entry[0] %}
+          {% assign tag_posts = tag_entry[1] %}
+          <button class="articles-filter" type="button" data-tag-filter="{{ tag_name | escape }}" aria-pressed="false">
+            {{ tag_name }} <span>{{ tag_posts | size }}</span>
+          </button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="articles-results">
+    <div class="articles-results-header">
+      <div>
+        <p><span data-results-count>{{ article_posts | size }}</span> 篇文章</p>
+        <p class="articles-active-filters" data-active-filters>全部文章</p>
+      </div>
+      <button type="button" class="articles-clear" data-clear-filters hidden>清除筛选</button>
+    </div>
+
+    <div class="articles-list" data-articles-list>
+      {% for post in article_posts %}
+        <article
+          class="articles-item"
+          data-article-item
+          data-category="{{ post.category | escape }}"
+          data-tags="{{ post.tags | join: '|' | escape }}"
+        >
+          <a href="{{ post.url | relative_url }}">
+            <div class="articles-item-heading">
+              <h2>{{ post.title }}</h2>
+              <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+            </div>
+            <p>{{ post.summary }}</p>
+            <div class="articles-item-meta">
+              <span class="article-category">{{ post.category }}</span>
+              {% for tag in post.tags %}
+                <span class="article-tag">{{ tag }}</span>
+              {% endfor %}
+            </div>
+          </a>
+        </article>
+      {% endfor %}
+    </div>
+
+    <div class="articles-empty" data-empty-state hidden>
+      <p>没有符合当前条件的文章。</p>
+      <button type="button" data-clear-filters>查看全部文章</button>
+    </div>
+  </div>
+</section>

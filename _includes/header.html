@@ -15,11 +15,11 @@
     {% endif %}
 
     {% if menu.url contains 'http://' or menu.url contains 'https://' %}
-    <li class="header-item-left {{class}}"><a href="{{menu.url}}" target="_blank" rel="noopener noreferrer">{{
+    <li class="header-item-left{% if class %} {{ class }}{% endif %}{% if menu.url == '/about.html' %} header-item-mobile-hidden{% endif %}"><a href="{{menu.url}}" target="_blank" rel="noopener noreferrer">{{
         menu.title
         }}</a></li>
     {% else %}
-    <li class="header-item-left {{class}}"><a href="{{ '/' | append: menu.url | replace: '//', '/' | relative_url }}">{{ menu.title }}</a></li>
+    <li class="header-item-left{% if class %} {{ class }}{% endif %}{% if menu.url == '/about.html' %} header-item-mobile-hidden{% endif %}"><a href="{{ '/' | append: menu.url | replace: '//', '/' | relative_url }}">{{ menu.title }}</a></li>
     {% endif %}
     {% endfor %}
 
@@ -34,7 +34,7 @@
   </ul>
 </div>
 
-{% if page.poem %}
+{% if page.poem and page.poem != empty %}
   {% assign headerText = page.poem %}
   {% assign fontSize = 42 %}
   {% assign fontWeight = 400 %}

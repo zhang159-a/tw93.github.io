@@ -2,10 +2,10 @@
 layout: post
 title: "妙言使用指南"
 poem: "妙言"
-date: 2026-07-23 21:30:03
 summary: "记录一下使用妙言的一些功能记录。"
 feature: "https://img.byhaoran.cn/PicGo/aff699af-157c-46f7-9c20-4ec610fa9ba2.jpg"
-categories: Share
+category: 技术实践
+tags: [Markdown, 写作]
 published: true
 ---
 

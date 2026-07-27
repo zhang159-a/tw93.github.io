@@ -1,6 +1,7 @@
 (function() {
   'use strict';
 
+  const SearchCore = window.Hr00SearchCore;
   let searchData = [];
   let searchModal, searchInput, searchResults, searchBtn, searchClose;
   let selectedIndex = -1;
@@ -133,12 +134,7 @@
       return;
     }
 
-    const results = searchData.filter(post => {
-      return post.title.toLowerCase().includes(query) ||
-             post.summary.toLowerCase().includes(query) ||
-             post.content.toLowerCase().includes(query) ||
-             post.categories.some(cat => cat.toLowerCase().includes(query));
-    });
+    const results = SearchCore.rankResults(searchData, query).map(result => result.post);
 
     displayResults(results, query);
   }
@@ -158,19 +154,22 @@
     }
 
     const html = results.slice(0, 10).map((post, index) => {
-      const highlightedTitle = highlightText(post.title, query);
-      const highlightedSummary = highlightText(post.summary || post.content, query);
-      const category = post.categories[0] || '';
+      const highlightedTitle = SearchCore.highlightText(post.title, query);
+      const highlightedSummary = SearchCore.highlightText(post.summary || post.content, query);
+      const category = Array.isArray(post.categories) ? post.categories[0] || '' : '';
+      const tags = Array.isArray(post.tags) ? post.tags.slice(0, 3) : [];
+      const safeUrl = SearchCore.normalizeUrl(post.url);
 
       return `
-        <a href="${post.url}" class="search-result-item" data-index="${index}" role="option">
+        <a href="${SearchCore.escapeHtml(safeUrl)}" class="search-result-item" data-index="${index}" role="option">
           <div class="search-result-content">
             <div class="search-result-title">${highlightedTitle}</div>
             <div class="search-result-summary">${highlightedSummary}</div>
           </div>
           <div class="search-result-meta">
-            ${category ? `<span class="search-result-category">${category}</span>` : ''}
-            <span class="search-result-date">${post.date}</span>
+            ${category ? `<span class="search-result-category">${SearchCore.escapeHtml(category)}</span>` : ''}
+            ${tags.map(tag => `<span class="search-result-tag">#${SearchCore.escapeHtml(tag)}</span>`).join('')}
+            <span class="search-result-date">${SearchCore.escapeHtml(post.date)}</span>
           </div>
         </a>
       `;
@@ -185,18 +184,6 @@
         updateSelection();
       });
     });
-  }
-
-  // Highlight text
-  function highlightText(text, query) {
-    if (!text) return '';
-    const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
-  }
-
-  // Escape regex special characters
-  function escapeRegex(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 
   // Navigate results
