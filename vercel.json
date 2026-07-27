@@ -17,6 +17,34 @@
       "destination": "https://photos.byhaoran.cn/photos/"
     },
     {
+      "source": "/photos/all",
+      "destination": "https://photos.byhaoran.cn/photos/all"
+    },
+    {
+      "source": "/photos/all/",
+      "destination": "https://photos.byhaoran.cn/photos/all/"
+    },
+    {
+      "source": "/photos/albums/:slug",
+      "destination": "https://photos.byhaoran.cn/photos/albums/:slug"
+    },
+    {
+      "source": "/photos/albums/:slug/",
+      "destination": "https://photos.byhaoran.cn/photos/albums/:slug/"
+    },
+    {
+      "source": "/photos/photo/:id",
+      "destination": "https://photos.byhaoran.cn/photos/photo/:id"
+    },
+    {
+      "source": "/photos/photo/:id/",
+      "destination": "https://photos.byhaoran.cn/photos/photo/:id/"
+    },
+    {
+      "source": "/photos/sitemap.xml",
+      "destination": "https://photos.byhaoran.cn/photos/sitemap.xml"
+    },
+    {
       "source": "/photos/:path*",
       "destination": "https://photos.byhaoran.cn/photos/:path*"
     }
