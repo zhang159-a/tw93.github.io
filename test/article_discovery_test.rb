@@ -42,7 +42,7 @@ class ArticleDiscoveryTest
     post = read_output('2026-07-23/kaku.html')
 
     assert_includes home, 'href="/articles/"'
-    assert_includes home, '>文章</a>'
+    assert_includes home, '>Articles</a>'
     assert_includes home, 'href="/about.html"'
     refute_includes home, 'header-item-mobile-hidden'
     assert_includes index, 'data-articles-root'
@@ -54,6 +54,12 @@ class ArticleDiscoveryTest
     assert_article_date index, '妙言使用指南', '2026-07-23'
     assert_includes post, 'class="post-category-link"'
     assert_includes post, '/articles/?category='
+  end
+
+  def test_filtered_article_cards_are_visually_hidden
+    css = read_output('css/index.css')
+
+    assert_includes css, '.articles-item[hidden]{display:none}'
   end
 
   def test_article_index_and_posts_expose_tag_filters

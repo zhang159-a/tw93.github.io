@@ -221,6 +221,10 @@ $articles-paper: #ffffff;
   border-radius: 12px;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 
+  &[hidden] {
+    display: none;
+  }
+
   > a {
     display: block;
     padding: 19px 18px 18px;
