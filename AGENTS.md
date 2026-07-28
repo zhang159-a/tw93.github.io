@@ -50,3 +50,10 @@ npm run build
 - Use `gh` for issue and PR inspection.
 - Do not post public comments unless the maintainer explicitly asks.
 - Draft public replies in the same language as the thread.
+
+## Git Commit Messages
+
+- Write generated Git commit summaries and descriptions primarily in Simplified Chinese.
+- Keep Conventional Commit type prefixes in English when appropriate, such as `feat:`, `fix:`, `docs:`, `chore:`, and `refactor:`.
+- Preserve filenames, code identifiers, commands, and technical terms in their original language.
+- Keep the summary concise and specific, without ending punctuation.
