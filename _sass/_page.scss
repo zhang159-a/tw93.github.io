@@ -297,52 +297,189 @@ iframe {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 6px;
-    padding: 4px 0 0;
+    gap: 18px;
+    padding: 8px 0 0;
   }
 
-.post-toc-nav {
+  .post-toc-nav {
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 3px;
-    padding-top: 2px;
+    max-height: calc(100vh - 220px);
+    padding: 0 0 0 2px;
+    overflow-y: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .post-toc-marker {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: var(--toc-marker-height, 28px);
+    border-radius: 2px;
+    background: linear-gradient(
+      to bottom,
+      #4d8066 0%,
+      #4d8066 78%,
+      rgba(#4d8066, 0) 100%
+    );
+    box-shadow: 0 0 7px rgba(#4d8066, 0.22);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(var(--toc-marker-y, 0));
+    transition:
+      transform 0.28s ease,
+      height 0.2s ease,
+      opacity 0.2s ease;
+
+    &.is-visible {
+      opacity: 1;
+    }
   }
 
   .post-toc-link {
     display: block;
-    padding: 6px 6px;
-    border-radius: 10px;
-    color: rgba($text-color, 0.7);
+    min-width: 0;
+    padding: 4px 8px 4px 16px;
+    overflow: hidden;
+    color: rgba($text-color, 0.56);
     font-size: 14px;
-    font-weight: 600;
-    line-height: 1.28;
+    font-weight: 500;
+    line-height: 1.45;
     text-decoration: none;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition:
+      color 0.24s ease,
+      opacity 0.24s ease;
 
     &:hover {
-      color: $header-color;
+      color: rgba($text-color, 0.82);
     }
 
     &.is-child {
-      padding-left: calc(6px + (var(--toc-depth, 1) * 10px));
-      color: rgba($text-color, 0.52);
-      font-size: 14px;
-      font-weight: 500;
+      padding-left: calc(16px + (var(--toc-depth, 1) * 9px));
+
+      &:not(.is-in-active-branch) {
+        display: none;
+      }
     }
 
     &.is-active {
+      color: #4d8066;
+      font-weight: 600;
+    }
+
+    &:focus-visible {
       color: $header-color;
-      font-weight: 700;
+      outline: 2px solid rgba(#4d8066, 0.32);
+      outline-offset: -2px;
     }
   }
 
-  .post-toc {
-    .post-toc-link {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+  .post-toc-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px 8px 0 18px;
+    border-top: 1px solid rgba($text-color, 0.14);
+  }
+
+  .post-toc-progress {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 7px 10px;
+    color: rgba($text-color, 0.58);
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .post-toc-progress-label {
+    letter-spacing: 0.08em;
+  }
+
+  .post-toc-progress-value {
+    color: rgba($text-color, 0.72);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .post-toc-progress-track {
+    grid-column: 1 / -1;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: rgba($text-color, 0.14);
+  }
+
+  .post-toc-progress-fill {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background-color: #4d8066;
+    transition: width 0.18s ease-out;
+  }
+
+  .post-toc-top {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 7px;
+    padding: 2px 0;
+    border: 0;
+    background: transparent;
+    color: rgba($text-color, 0.58);
+    font-family: inherit;
+    font-size: 12px;
+    line-height: 1.4;
+    opacity: 0;
+    visibility: hidden;
+    cursor: pointer;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+      color 0.2s ease,
+      opacity 0.2s ease,
+      transform 0.2s ease,
+      visibility 0s linear 0.2s;
+
+    &.is-visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+      transition-delay: 0s;
     }
+
+    &:hover {
+      color: #4d8066;
+    }
+
+    &:focus-visible {
+      color: $header-color;
+      outline: 2px solid rgba(#4d8066, 0.32);
+      outline-offset: 4px;
+    }
+  }
+
+  .post-toc-top-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 11px;
+    line-height: 1;
   }
 
 }
@@ -366,9 +503,9 @@ iframe {
     .post-toc {
       display: block;
       position: absolute;
-      top: -4px;
+      top: 0;
       left: calc(100% + 24px);
-      width: 260px;
+      width: 176px;
       height: 100%;
       min-height: 32px;
     }
@@ -381,6 +518,17 @@ iframe {
     .post-followup {
       max-width: 900px;
       margin: 0 auto;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #post {
+    .post-toc-marker,
+    .post-toc-link,
+    .post-toc-progress-fill,
+    .post-toc-top {
+      transition: none;
     }
   }
 }

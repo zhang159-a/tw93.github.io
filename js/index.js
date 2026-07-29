@@ -344,12 +344,15 @@ function addCodeCopy() {
 function initPostToc() {
   if (!document.body || document.body.id !== 'post') return;
 
-  var MAX_TOC_ITEMS = 14;
-
   var content = document.querySelector('.entry-content');
   var toc = document.getElementById('J_post_toc');
   var tocNav = document.getElementById('J_post_toc_nav');
-  if (!content || !toc || !tocNav) return;
+  var tocMarker = document.getElementById('J_post_toc_marker');
+  var progress = document.getElementById('J_post_toc_progress');
+  var progressValue = document.getElementById('J_post_toc_progress_value');
+  var progressFill = document.getElementById('J_post_toc_progress_fill');
+  var topButton = document.getElementById('J_post_toc_top');
+  if (!content || !toc || !tocNav || !tocMarker || !progress || !progressValue || !progressFill || !topButton) return;
 
   var headings = Array.prototype.slice.call(content.querySelectorAll('h1:not(.post-title), h2, h3, h4:not(.page-info), h5, h6')).filter(function (heading) {
     return heading.textContent && heading.textContent.trim();
@@ -391,11 +394,13 @@ function initPostToc() {
     };
   });
 
-  var tocHierarchy = buildPostTocHierarchy(tocItems, MAX_TOC_ITEMS);
+  var tocHierarchy = buildPostTocHierarchy(tocItems);
   var tocVisibleItems = tocHierarchy.visibleItems;
 
   var buildNav = function (target) {
-    target.innerHTML = '';
+    Array.prototype.slice.call(target.querySelectorAll('.post-toc-link')).forEach(function (link) {
+      link.remove();
+    });
 
     tocVisibleItems.forEach(function (item) {
       var link = document.createElement('a');
@@ -403,7 +408,9 @@ function initPostToc() {
       link.style.setProperty('--toc-depth', item.depth);
       link.href = '#' + item.id;
       link.textContent = item.text;
+      link.title = item.text;
       link.setAttribute('data-toc-id', item.id);
+      link.setAttribute('data-toc-branch-id', item.branchId);
       target.appendChild(link);
     });
   };
@@ -414,10 +421,63 @@ function initPostToc() {
 
   document.body.classList.add('has-post-toc');
 
+  var updateMarker = function (activeLink) {
+    if (!activeLink || activeLink.offsetParent === null) {
+      tocMarker.classList.remove('is-visible');
+      return;
+    }
+
+    tocNav.style.setProperty('--toc-marker-y', activeLink.offsetTop + 'px');
+    tocNav.style.setProperty('--toc-marker-height', activeLink.offsetHeight + 'px');
+    tocMarker.classList.add('is-visible');
+  };
+
   var setActive = function (id) {
-    tocNav.querySelectorAll('.post-toc-link').forEach(function (link) {
-      link.classList.toggle('is-active', link.getAttribute('data-toc-id') === id);
+    var activeItem = tocVisibleItems.find(function (item) {
+      return item.id === id;
     });
+    var activeBranchId = activeItem ? activeItem.branchId : tocVisibleItems[0].branchId;
+    var activeLink = null;
+
+    tocNav.querySelectorAll('.post-toc-link').forEach(function (link) {
+      var isActive = link.getAttribute('data-toc-id') === id;
+      var isInActiveBranch = link.getAttribute('data-toc-branch-id') === activeBranchId;
+
+      link.classList.toggle('is-active', isActive);
+      link.classList.toggle('is-in-active-branch', isInActiveBranch);
+
+      if (isActive) {
+        link.setAttribute('aria-current', 'location');
+        activeLink = link;
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+
+    window.requestAnimationFrame(function () {
+      updateMarker(activeLink);
+    });
+  };
+
+  var updateProgress = function () {
+    var scrollY = window.scrollY || window.pageYOffset || 0;
+    var contentRect = content.getBoundingClientRect();
+    var articleTop = contentRect.top + scrollY;
+    var percentage = getPostReadProgress(
+      scrollY,
+      articleTop,
+      content.offsetHeight,
+      window.innerHeight
+    );
+    var showTopButton = shouldShowPostTocTop(scrollY, window.innerHeight);
+
+    progressValue.textContent = percentage + '%';
+    progressFill.style.width = percentage + '%';
+    progress.setAttribute('aria-valuenow', percentage);
+
+    topButton.classList.toggle('is-visible', showTopButton);
+    topButton.setAttribute('aria-hidden', String(!showTopButton));
+    topButton.tabIndex = showTopButton ? 0 : -1;
   };
 
   var computeActiveHeading = function () {
@@ -431,6 +491,7 @@ function initPostToc() {
     });
 
     setActive(activeId);
+    updateProgress();
   };
 
   var ticking = false;
@@ -446,9 +507,17 @@ function initPostToc() {
   computeActiveHeading();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
+
+  topButton.addEventListener('click', function () {
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({
+      top: 0,
+      behavior: reduceMotion ? 'auto' : 'smooth'
+    });
+  });
 }
 
-function buildPostTocHierarchy(items, maxItems) {
+function buildPostTocHierarchy(items) {
   if (!items.length) {
     return { items: [], visibleItems: [] };
   }
@@ -466,25 +535,40 @@ function buildPostTocHierarchy(items, maxItems) {
       depth: headingLevels[index] - shallowestLevel
     };
   });
-  var hasChildHeadings = hierarchicalItems.some(function (item) {
-    return item.depth > 0;
-  });
-  var visibleItems = hierarchicalItems;
+  var currentBranchId = hierarchicalItems[0].id;
 
-  if (hasChildHeadings && hierarchicalItems.length > maxItems) {
-    visibleItems = hierarchicalItems.filter(function (item) {
-      return item.depth === 0;
-    });
-  }
+  hierarchicalItems.forEach(function (item) {
+    if (item.depth === 0) {
+      currentBranchId = item.id;
+    }
+
+    item.branchId = currentBranchId;
+  });
 
   return {
     items: hierarchicalItems,
-    visibleItems: visibleItems
+    visibleItems: hierarchicalItems
   };
+}
+
+function getPostReadProgress(scrollY, articleTop, articleHeight, viewportHeight) {
+  if (articleHeight <= viewportHeight) {
+    return scrollY >= articleTop ? 100 : 0;
+  }
+
+  var readingDistance = articleHeight - viewportHeight;
+  var percentage = ((scrollY - articleTop) / readingDistance) * 100;
+  return Math.round(Math.min(Math.max(percentage, 0), 100));
+}
+
+function shouldShowPostTocTop(scrollY, viewportHeight) {
+  return scrollY > viewportHeight * 0.75;
 }
 
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
-    buildPostTocHierarchy: buildPostTocHierarchy
+    buildPostTocHierarchy: buildPostTocHierarchy,
+    getPostReadProgress: getPostReadProgress,
+    shouldShowPostTocTop: shouldShowPostTocTop
   };
 }

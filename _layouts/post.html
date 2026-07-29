@@ -26,7 +26,36 @@ body_id: post
 
   <aside class="post-toc" id="J_post_toc" hidden aria-label="本文目录">
     <div class="post-toc-inner">
-      <nav class="post-toc-nav" id="J_post_toc_nav"></nav>
+      <nav class="post-toc-nav" id="J_post_toc_nav" aria-label="文章章节">
+        <span class="post-toc-marker" id="J_post_toc_marker" aria-hidden="true"></span>
+      </nav>
+      <div class="post-toc-footer">
+        <div
+          class="post-toc-progress"
+          id="J_post_toc_progress"
+          role="progressbar"
+          aria-label="阅读进度"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          aria-valuenow="0"
+        >
+          <span class="post-toc-progress-label">阅读进度</span>
+          <span class="post-toc-progress-value" id="J_post_toc_progress_value">0%</span>
+          <span class="post-toc-progress-track" aria-hidden="true">
+            <span class="post-toc-progress-fill" id="J_post_toc_progress_fill"></span>
+          </span>
+        </div>
+        <button
+          class="post-toc-top"
+          id="J_post_toc_top"
+          type="button"
+          tabindex="-1"
+          aria-hidden="true"
+        >
+          <span class="post-toc-top-icon" aria-hidden="true">↑</span>
+          <span>回到顶部</span>
+        </button>
+      </div>
     </div>
   </aside>
 </div>

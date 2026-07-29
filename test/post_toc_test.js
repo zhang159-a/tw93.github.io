@@ -3,7 +3,11 @@ global.document = {
   addEventListener() {}
 };
 
-const { buildPostTocHierarchy } = require('../js/index.js');
+const {
+  buildPostTocHierarchy,
+  getPostReadProgress,
+  shouldShowPostTocTop
+} = require('../js/index.js');
 
 let tests = 0;
 
@@ -41,7 +45,7 @@ test('preserves heading depth relative to the shallowest article heading', () =>
     item('h1', 'Spec Coding'),
     item('h2', 'speckit-plan'),
     item('h3', 'speckit-analyze')
-  ], 14);
+  ]);
 
   assertEqual([0, 1, 2], hierarchy.visibleItems.map(entry => entry.depth));
 });
@@ -50,36 +54,51 @@ test('keeps the existing h2 and h3 hierarchy for regular posts', () => {
   const hierarchy = buildPostTocHierarchy([
     item('h2', 'Section'),
     item('h3', 'Detail')
-  ], 14);
+  ]);
 
   assertEqual([0, 1], hierarchy.visibleItems.map(entry => entry.depth));
 });
 
-test('keeps only top-level headings when a nested toc exceeds the limit', () => {
-  const headings = [
-    item('h1', 'Overview'),
-    item('h1', 'Spec Coding')
-  ];
+test('assigns child headings to their nearest top-level branch', () => {
+  const hierarchy = buildPostTocHierarchy([
+    item('h2', 'Overview'),
+    item('h3', 'Context'),
+    item('h2', 'Implementation'),
+    item('h3', 'Details')
+  ]);
 
-  for (let index = 0; index < 13; index += 1) {
-    headings.push(item('h2', `Section ${index + 1}`));
-  }
-
-  const hierarchy = buildPostTocHierarchy(headings, 14);
-
-  assertEqual(['Overview', 'Spec Coding'], hierarchy.visibleItems.map(entry => entry.text));
+  assertEqual(
+    ['overview', 'overview', 'implementation', 'implementation'],
+    hierarchy.visibleItems.map(entry => entry.branchId)
+  );
 });
 
-test('does not collapse a long flat toc', () => {
-  const headings = [];
+test('keeps every heading available for active-branch navigation', () => {
+  const headings = [item('h2', 'Overview')];
 
   for (let index = 0; index < 15; index += 1) {
-    headings.push(item('h2', `Section ${index + 1}`));
+    headings.push(item('h3', `Section ${index + 1}`));
   }
 
-  const hierarchy = buildPostTocHierarchy(headings, 14);
+  const hierarchy = buildPostTocHierarchy(headings);
 
-  assertEqual(15, hierarchy.visibleItems.length);
+  assertEqual(16, hierarchy.visibleItems.length);
+});
+
+test('calculates and clamps reading progress', () => {
+  assertEqual(0, getPostReadProgress(100, 300, 2000, 1000));
+  assertEqual(50, getPostReadProgress(800, 300, 2000, 1000));
+  assertEqual(100, getPostReadProgress(1400, 300, 2000, 1000));
+});
+
+test('handles an article shorter than the viewport', () => {
+  assertEqual(0, getPostReadProgress(100, 300, 800, 1000));
+  assertEqual(100, getPostReadProgress(300, 300, 800, 1000));
+});
+
+test('shows the top button after most of one viewport', () => {
+  assertEqual(false, shouldShowPostTocTop(600, 800));
+  assertEqual(true, shouldShowPostTocTop(601, 800));
 });
 
 console.log(`\n${tests} tests, 0 failures`);
