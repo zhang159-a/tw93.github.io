@@ -274,8 +274,12 @@ iframe {
 
 #post {
   &.has-post-toc {
+    .entry-content h1:not(.post-title),
     .entry-content h2,
-    .entry-content h3 {
+    .entry-content h3,
+    .entry-content h4:not(.page-info),
+    .entry-content h5,
+    .entry-content h6 {
       scroll-margin-top: 104px;
     }
   }
@@ -321,7 +325,7 @@ iframe {
     }
 
     &.is-child {
-      padding-left: 16px;
+      padding-left: calc(6px + (var(--toc-depth, 1) * 10px));
       color: rgba($text-color, 0.52);
       font-size: 14px;
       font-weight: 500;

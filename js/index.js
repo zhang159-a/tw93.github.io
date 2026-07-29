@@ -351,7 +351,7 @@ function initPostToc() {
   var tocNav = document.getElementById('J_post_toc_nav');
   if (!content || !toc || !tocNav) return;
 
-  var headings = Array.prototype.slice.call(content.querySelectorAll('h2, h3')).filter(function (heading) {
+  var headings = Array.prototype.slice.call(content.querySelectorAll('h1:not(.post-title), h2, h3, h4:not(.page-info), h5, h6')).filter(function (heading) {
     return heading.textContent && heading.textContent.trim();
   });
 
@@ -391,25 +391,16 @@ function initPostToc() {
     };
   });
 
-  var tocVisibleItems = tocItems;
-  var hasChildHeadings = tocItems.some(function (item) {
-    return item.level === 'h3';
-  });
-
-  if (hasChildHeadings && tocItems.length > MAX_TOC_ITEMS) {
-    tocVisibleItems = tocItems.filter(function (item) {
-      return item.level === 'h2';
-    });
-  }
-
-  var allH3 = tocVisibleItems.every(function (item) { return item.level === 'h3'; });
+  var tocHierarchy = buildPostTocHierarchy(tocItems, MAX_TOC_ITEMS);
+  var tocVisibleItems = tocHierarchy.visibleItems;
 
   var buildNav = function (target) {
     target.innerHTML = '';
 
     tocVisibleItems.forEach(function (item) {
       var link = document.createElement('a');
-      link.className = 'post-toc-link' + (!allH3 && item.level === 'h3' ? ' is-child' : '');
+      link.className = 'post-toc-link' + (item.depth > 0 ? ' is-child' : '');
+      link.style.setProperty('--toc-depth', item.depth);
       link.href = '#' + item.id;
       link.textContent = item.text;
       link.setAttribute('data-toc-id', item.id);
@@ -455,4 +446,45 @@ function initPostToc() {
   computeActiveHeading();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll);
+}
+
+function buildPostTocHierarchy(items, maxItems) {
+  if (!items.length) {
+    return { items: [], visibleItems: [] };
+  }
+
+  var headingLevels = items.map(function (item) {
+    return Number(item.level.slice(1));
+  });
+  var shallowestLevel = Math.min.apply(null, headingLevels);
+  var hierarchicalItems = items.map(function (item, index) {
+    return {
+      element: item.element,
+      id: item.id,
+      text: item.text,
+      level: item.level,
+      depth: headingLevels[index] - shallowestLevel
+    };
+  });
+  var hasChildHeadings = hierarchicalItems.some(function (item) {
+    return item.depth > 0;
+  });
+  var visibleItems = hierarchicalItems;
+
+  if (hasChildHeadings && hierarchicalItems.length > maxItems) {
+    visibleItems = hierarchicalItems.filter(function (item) {
+      return item.depth === 0;
+    });
+  }
+
+  return {
+    items: hierarchicalItems,
+    visibleItems: visibleItems
+  };
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    buildPostTocHierarchy: buildPostTocHierarchy
+  };
 }
