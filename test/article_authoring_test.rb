@@ -59,15 +59,11 @@ class ArticleAuthoringTest
     end
   end
 
-  def test_confirmed_articles_use_the_new_taxonomy
+  def test_published_articles_use_the_new_taxonomy
     expected_articles = {
       '2026-07-23-kaku.md' => %w[Kaku Terminal],
       '2026-07-23-miaoyan-guide.md' => ['Markdown', '写作'],
-      '2026-7-25-Github-Desktop.md' => ['Git'],
-      '2026-7-25-Hr00.md' => ['博客'],
-      '2026-7-25-Terminal-Editing.md' => ['Terminal', '快捷键'],
-      '2026-7-26-Mac.md' => ['macOS', '工具推荐'],
-      '2026-7-26-Terminal-Tools.md' => ['Terminal']
+      '2026-7-25-Github-Desktop.md' => ['Git']
     }
 
     expected_articles.each do |filename, tags|
@@ -75,6 +71,13 @@ class ArticleAuthoringTest
       assert_equal '技术实践', data['category']
       assert_equal tags, data['tags']
       assert_equal false, data.key?('categories')
+    end
+  end
+
+  def test_posts_only_contain_publish_ready_articles
+    Dir.glob(File.join(ROOT, '_posts', '*.{md,markdown,html}')).each do |path|
+      data, = read_front_matter(path)
+      assert_equal true, data['published']
     end
   end
 

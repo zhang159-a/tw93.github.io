@@ -8,7 +8,8 @@ Vercel is the deployment target. Feature branches and pull requests are previews
 
 ## Repository Map
 
-- `_posts/` - Chinese posts.
+- `_writing/` - local-only MiaoYan workspace for ideas and unfinished drafts.
+- `_posts/` - publish-ready Chinese posts.
 - `_layouts/` - Jekyll layouts, including post and PPT modes.
 - `_includes/` - shared page fragments.
 - `_sass/` - stylesheets.
@@ -27,8 +28,10 @@ npm run build
 
 ## Content Rules
 
-- Chinese posts live in `_posts/` and are named `YYYY-MM-DD-{topic}.md`.
-- Required frontmatter: `layout`, `title`, `date`. Preserve all existing frontmatter fields.
+- Unfinished articles stay under `_writing/` with `published: false`; this directory is ignored by Git.
+- Publish-ready Chinese posts live in `_posts/` and are named `YYYY-MM-DD-{topic}.md`.
+- The filename supplies the publication date; do not add a separate `date` field.
+- Required frontmatter: `layout`, `title`, `poem`, `summary`, `feature`, `category`, `tags`, and `published`. Preserve all existing frontmatter fields.
 - Preserve the author's voice. Do not rewrite colloquial phrasing to formal style or add emoji.
 - Prefer absolute Cloudflare R2 image URLs inserted through PicGo.
 

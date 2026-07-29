@@ -21,20 +21,45 @@ The generated static site is written to `_site/`.
 
 ## Writing
 
-Chinese posts live in `_posts/` and use the filename format
-`YYYY-MM-DD-topic.md`. The filename date is the publication date; do not add a
-separate `date` field. Choose a structure from `_templates/`, copy it into
-`_posts/`, rename it, and update its frontmatter:
+MiaoYan uses `_writing/` as a local writing workspace:
+
+```text
+_writing/
+├── 00-灵感/
+├── 10-写作中/
+│   ├── 技术实践/
+│   ├── 学习笔记/
+│   ├── 生活记录/
+│   └── 思考随笔/
+└── 20-待发布/
+```
+
+Capture quick ideas in `00-灵感/`. When an idea becomes an article, choose a
+structure from `_templates/`, copy it into the matching category under
+`10-写作中/`, and keep `published: false`. Move finished drafts to
+`20-待发布/`.
+
+The `_writing/` directory is ignored by Git so unfinished articles are not
+accidentally committed to the public repository. Back it up separately if
+needed.
+
+Only publish-ready Chinese posts belong in `_posts/`. Before publishing, rename
+the file to `YYYY-MM-DD-topic.md`, move it into `_posts/`, and change
+`published` to `true`. The filename date is the publication date; do not add a
+separate `date` field.
+
+Available article templates:
 
 - `01-技术实践.md` - technical practice, product analysis, and research.
 - `02-学习笔记.md` - courses, tools, books, and learning records.
 - `03-生活记录.md` - everyday life and personal records.
 - `04-思考随笔.md` - observations, opinions, and personal reflections.
 
-Keep `published: false` while drafting and remove that line when the post is
-ready. Each article has one category and up to five tags. Leave `poem` empty to
-reuse the article title in the header. Images uploaded through PicGo should be
-inserted as absolute Cloudflare R2 URLs.
+Each article has one category and up to five tags. The folder structure manages
+writing status, while the `category` and `tags` frontmatter fields control the
+website filters. Leave `poem` empty to reuse the article title in the header.
+Images uploaded through PicGo should be inserted as absolute Cloudflare R2
+URLs.
 
 Weekly issues live in `_weekly/`. Copy `_weekly/001-template.md`, rename it to
 the issue slug (for example `001-first-week.md`), fill in `issue`, `title`,
