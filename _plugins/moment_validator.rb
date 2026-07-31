@@ -3,7 +3,6 @@ require 'date'
 module Hr00
   class MomentValidator < Jekyll::Generator
     DISPLAY_MODES = %w[inline detail].freeze
-    FILENAME_PATTERN = /\A(\d{4}-\d{2}-\d{2})-[a-z0-9][a-z0-9-]*\.(?:md|markdown|html)\z/.freeze
 
     safe true
     priority :highest
@@ -39,12 +38,14 @@ module Hr00
     def validate(path, data, source)
       relative_path = path.delete_prefix("#{source}/")
       prefix = "#{relative_path}:"
-      filename_match = File.basename(path).match(FILENAME_PATTERN)
       errors = []
 
-      errors << "#{prefix} filename must follow YYYY-MM-DD-lowercase-slug.md" unless filename_match
       errors << "#{prefix} title must not be empty" if data['title'].to_s.strip.empty?
-      errors << "#{prefix} date must be present" if data['date'].to_s.strip.empty?
+      if data['date'].to_s.strip.empty?
+        errors << "#{prefix} date must be present"
+      else
+        Date.parse(data['date'].to_s)
+      end
       unless DISPLAY_MODES.include?(data['display'])
         errors << "#{prefix} display must be one of #{DISPLAY_MODES.join(' or ')}"
       end
@@ -53,11 +54,6 @@ module Hr00
       end
       if data.key?('cover') && !data['cover'].to_s.empty? && !data['cover'].match?(%r{\Ahttps://})
         errors << "#{prefix} cover must be an absolute HTTPS URL when provided"
-      end
-
-      if filename_match && !data['date'].to_s.strip.empty?
-        moment_date = Date.parse(data['date'].to_s).strftime('%Y-%m-%d')
-        errors << "#{prefix} date must match the filename date" unless moment_date == filename_match[1]
       end
 
       errors

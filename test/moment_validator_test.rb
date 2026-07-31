@@ -59,24 +59,19 @@ class MomentValidatorTest
       YAML
     end
 
-    assert_includes error.message, 'filename must follow'
     assert_includes error.message, 'title must not be empty'
     assert_includes error.message, 'display must be one of inline or detail'
     assert_includes error.message, 'summary must be a string'
     assert_includes error.message, 'cover must be an absolute HTTPS URL'
   end
 
-  def test_published_moment_rejects_filename_date_mismatch
-    error = assert_raises(Jekyll::Errors::FatalException) do
-      build_site('2026-07-01-shanghai-trip.md', <<~YAML)
+  def test_published_moment_accepts_legacy_filename
+    build_site('2026-7-27-dong ye gui wu.md', <<~YAML)
         title: 上海之行
         date: 2026-07-02
         display: inline
         published: true
       YAML
-    end
-
-    assert_includes error.message, 'date must match the filename date'
   end
 
   def build_site(filename, front_matter)
