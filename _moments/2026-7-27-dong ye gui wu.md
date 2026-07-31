@@ -1,7 +1,7 @@
 ---
 title: "纪念东野圭吾作家"
 date: 2026-7-27
-display: inline
+display: detail
 summary: "晚安 东野圭吾"
 cover: ""
 published: true
