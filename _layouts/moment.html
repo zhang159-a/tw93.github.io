@@ -1,0 +1,50 @@
+---
+layout: base
+body_id: moment
+---
+
+{% assign moment_items = site.moments | where_exp: "item", "item.published != false" | sort: "date" %}
+{% assign older_moment = nil %}
+{% assign newer_moment = nil %}
+{% for item in moment_items %}
+  {% if item.url == page.url %}
+    {% assign newer_moment = moment_items[forloop.index] %}
+    {% break %}
+  {% endif %}
+  {% assign older_moment = item %}
+{% endfor %}
+
+<article class="moment-detail-shell">
+  <a class="moment-back-link" href="{{ '/moments/' | relative_url }}">
+    <svg aria-hidden="true" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.75 3.5 5.25 8l4.5 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    返回 Moments
+  </a>
+
+  <header class="moment-detail-header">
+    <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y.%m.%d" }}</time>
+    <h1>{{ page.title }}</h1>
+  </header>
+
+  <div class="moment-detail-content entry-content heti">
+    {{ content | cdn_image_filter | video_embed_filter }}
+  </div>
+
+  {% if older_moment or newer_moment %}
+  <nav class="moment-detail-navigation" aria-label="相邻时刻">
+    {% if older_moment %}
+    <a class="moment-detail-navigation-item is-older" href="{{ older_moment.url | relative_url }}">
+      <span>更早的时刻</span>
+      <strong>{{ older_moment.title }}</strong>
+    </a>
+    {% endif %}
+    {% if newer_moment %}
+    <a class="moment-detail-navigation-item is-newer" href="{{ newer_moment.url | relative_url }}">
+      <span>更新的时刻</span>
+      <strong>{{ newer_moment.title }}</strong>
+    </a>
+    {% endif %}
+  </nav>
+  {% endif %}
+</article>

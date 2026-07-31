@@ -19,6 +19,8 @@ github: zhang159-a
 menu:
   - title: "Articles"
     url: "/articles/"
+  - title: "Moments"
+    url: "/moments/"
   - title: "Photos"
     url: "/photos/"
   - title: "Weekly"
@@ -55,6 +57,10 @@ collections:
     output: true
     permalink: /weekly/:name/
     sort_by: issue
+  moments:
+    output: true
+    permalink: /moments/:name/
+    sort_by: date
 include: [".htaccess", "robots.txt"]
 exclude:
   [
@@ -113,6 +119,14 @@ defaults:
       sitemap:
         priority: 0.7
         changefreq: weekly
+  - scope:
+      path: ""
+      type: "moments"
+    values:
+      layout: moment
+      sitemap:
+        priority: 0.7
+        changefreq: monthly
   - scope:
       path: ""
       type: "pages"

@@ -30,7 +30,7 @@ class ArticleAuthoringTest
 
   private
 
-  def test_four_category_templates_are_minimal_and_blank
+  def test_templates_are_minimal_and_blank
     expected_templates = {
       '01-技术实践.md' => '技术实践',
       '02-学习笔记.md' => '学习笔记',
@@ -39,7 +39,7 @@ class ArticleAuthoringTest
     }
     actual_templates = Dir.children(File.join(ROOT, '_templates')).grep(/\.md\z/).sort
 
-    assert_equal expected_templates.keys, actual_templates
+    assert_equal (expected_templates.keys + ['05-Moment.md']).sort, actual_templates
 
     expected_templates.each do |filename, category|
       data, body = read_front_matter(File.join(ROOT, '_templates', filename))
@@ -57,6 +57,16 @@ class ArticleAuthoringTest
       assert_equal false, data['published']
       assert_equal '', body.strip
     end
+
+    moment_data, moment_body = read_front_matter(File.join(ROOT, '_templates', '05-Moment.md'))
+    assert_equal %w[title date display summary cover published], moment_data.keys
+    assert_equal '', moment_data['title']
+    assert_equal nil, moment_data['date']
+    assert_equal 'inline', moment_data['display']
+    assert_equal '', moment_data['summary']
+    assert_equal '', moment_data['cover']
+    assert_equal false, moment_data['published']
+    assert_equal '', moment_body.strip
   end
 
   def test_published_articles_use_the_new_taxonomy

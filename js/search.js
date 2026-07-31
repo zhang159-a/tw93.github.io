@@ -141,7 +141,7 @@
 
   // Show empty state
   function showEmptyState() {
-    searchResults.innerHTML = '<div class="search-empty-state">输入关键词搜索文章或 Weekly</div>';
+    searchResults.innerHTML = '<div class="search-empty-state">输入关键词搜索文章、Weekly 或 Moment</div>';
   }
 
   // Display search results
@@ -158,7 +158,7 @@
       const highlightedSummary = SearchCore.highlightText(post.summary || post.content, query);
       const category = Array.isArray(post.categories) ? post.categories[0] || '' : '';
       const tags = Array.isArray(post.tags) ? post.tags.slice(0, 3) : [];
-      const typeLabel = post.type === 'weekly' ? 'Weekly' : '';
+      const typeLabel = post.type === 'weekly' ? 'Weekly' : post.type === 'moment' ? 'Moment' : '';
       const safeUrl = SearchCore.normalizeUrl(post.url);
 
       return `

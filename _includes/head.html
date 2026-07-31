@@ -1,6 +1,6 @@
 <head>
   {% assign is_article = false %}
-  {% if page.layout == 'post' or page.layout == 'weekly' %}
+  {% if page.layout == 'post' or page.layout == 'weekly' or page.layout == 'moment' %}
     {% assign is_article = true %}
   {% endif %}
   {% assign page_description = page.summary | default: page.description | default: site.description %}
