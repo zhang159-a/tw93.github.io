@@ -17,3 +17,6 @@ journal/
 .claude/settings.local.json
 .mcp.json
 .vercel
+
+# Local MiaoYan writing workspace
+_writing/

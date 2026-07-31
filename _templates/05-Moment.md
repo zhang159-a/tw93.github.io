@@ -1,7 +1,7 @@
 ---
 title: ""
 date:
-display: inline
+display: inline detail
 summary: ""
 cover: ""
 published: false
