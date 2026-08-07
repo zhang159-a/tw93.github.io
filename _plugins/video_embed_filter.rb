@@ -17,6 +17,12 @@ module Jekyll
       www.bilibili.com
       m.bilibili.com
     ].freeze
+    MEGA_HOSTS = %w[
+      mega.nz
+      www.mega.nz
+    ].freeze
+    MEGA_PATH = %r{\A/(?:file|embed)/([A-Za-z0-9_-]+)(?:/)?\z}.freeze
+    MEGA_TOKEN = /\A[A-Za-z0-9_-]+\z/.freeze
     DIRECT_VIDEO_EXTENSIONS = %w[.mp4 .webm .ogv .ogg .m4v].freeze
 
     def video_embed_filter(input)
@@ -32,7 +38,7 @@ module Jekyll
       uri = URI.parse(source_url)
       return unless %w[http https].include?(uri.scheme)
 
-      youtube_embed(uri) || bilibili_embed(uri) || direct_video_embed(uri)
+      youtube_embed(uri) || bilibili_embed(uri) || mega_embed(uri) || direct_video_embed(uri)
     rescue URI::InvalidURIError, ArgumentError
       nil
     end
@@ -83,6 +89,17 @@ module Jekyll
 
       player_url = "https://player.bilibili.com/player.html?#{URI.encode_www_form(player_params)}"
       iframe_embed(player_url, '哔哩哔哩视频播放器', 'autoplay; fullscreen')
+    end
+
+    def mega_embed(uri)
+      return unless MEGA_HOSTS.include?(uri.host&.downcase)
+
+      file_match = uri.path.match(MEGA_PATH)
+      token = uri.fragment
+      return unless file_match && token&.match?(MEGA_TOKEN)
+
+      player_url = "https://mega.nz/embed/#{file_match[1]}##{token}"
+      iframe_embed(player_url, 'MEGA 视频播放器', 'autoplay; fullscreen')
     end
 
     def direct_video_embed(uri)

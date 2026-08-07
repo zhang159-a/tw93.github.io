@@ -63,6 +63,25 @@ class VideoEmbedFilterTest
     assert_includes result, 'https://player.bilibili.com/player.html?aid=170001'
   end
 
+  def test_embeds_mega_file_share_url
+    result = filter('<p>https://mega.nz/file/61IHERCZ#abcDEF012_-token</p>')
+
+    assert_includes result, 'https://mega.nz/embed/61IHERCZ#abcDEF012_-token'
+    assert_includes result, 'title="MEGA 视频播放器"'
+  end
+
+  def test_accepts_mega_embed_url
+    result = filter('<p>https://mega.nz/embed/61IHERCZ#abcDEF012_-token</p>')
+
+    assert_includes result, 'https://mega.nz/embed/61IHERCZ#abcDEF012_-token'
+  end
+
+  def test_leaves_mega_file_url_without_key_unchanged
+    input = '<p>https://mega.nz/file/61IHERCZ</p>'
+
+    assert_equal input, filter(input)
+  end
+
   def test_embeds_direct_video_file
     result = filter('<p>https://cdn.example.com/videos/demo.mp4?download=0&amp;token=public</p>')
 
