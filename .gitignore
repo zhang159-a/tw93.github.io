@@ -17,6 +17,7 @@ journal/
 .claude/settings.local.json
 .mcp.json
 .vercel
+.playwright-cli/
 
 # Local MiaoYan writing workspace
 _writing/
